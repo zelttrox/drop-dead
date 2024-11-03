@@ -1,11 +1,10 @@
+using System;
 using UnityEngine;
 
 public struct Player {
 
     // Vitals
     public float Health;
-    public float Hunger;
-    public float Thrist;
     public int Damage;
 
     // Abilities
@@ -24,11 +23,6 @@ public struct Player {
     // Gravity
     public float Gravity;
     public float JumpHeight;
-
-    // Weight
-    public float MaxWeight;
-    public float Weight;
-    public float WeightMinus;
 
     // Logic
     public bool isInsideMenu;
@@ -58,10 +52,21 @@ public struct Controls {
     public KeyCode Key_inventory;
 }
 
+public struct Entities {
+
+    // Ennemy type
+    public Type type;
+    public enum Type { Sentinel, Fetcher }
+
+    // Movements
+    public float speed;
+}
+
 public class Game : MonoBehaviour {
 
     public static Player player;
     public static Controls ctrl;
+    public static Entities entity;
 
     // Initialize player variables
     public static void InitPlayer() {
@@ -76,8 +81,6 @@ public class Game : MonoBehaviour {
         player.Speed = 0f;
         player.Gravity = -22f;
         player.JumpHeight = 3f;
-        player.MaxWeight = 200;
-        player.Weight = 0;
         player.Reach = 20;
         player.Damage = 5;
     }
@@ -99,5 +102,15 @@ public class Game : MonoBehaviour {
         ctrl.Key_interact = KeyCode.U;
         ctrl.Mse_Primary = KeyCode.Mouse0;
         ctrl.Mse_Secondary = KeyCode.Mouse1;
+    }
+
+    // Initialize controls 
+    public static void InitEntities() {
+
+        // Initialize player structure
+        Debug.Log("<color=cyan>~ Instancing Controls</color>");
+
+        entity.speed = 10f;
+
     }
 }

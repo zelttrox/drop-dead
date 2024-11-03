@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
 
-    // Creating variables
+    // Controller
     public CharacterController controller;
 
+    // Ground detection
+    private float groundDistance = 0.4f;
+    private bool isGrounded;
     public Transform groundCheck;
-    public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
+    // Velocity
     Vector3 velocity;
 
-    [SerializeField] bool isGrounded;
-
+    // Structs
     private Player player;
     private Controls ctrl;
 
@@ -23,16 +25,17 @@ public class Movement : MonoBehaviour {
 
     void Update() {
 
-        PlayerState();
+        PlayerState(); 
         GroundDetector();
 
-        MovementHandler();
-        JumpHandler();
+        MovementHandler(); 
+        JumpHandler(); 
         SneakHandler();
 
         Gravity();
     }
 
+    // Checks if the player is grounded
     public void GroundDetector() {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (isGrounded && velocity.y < 0) {
@@ -40,11 +43,13 @@ public class Movement : MonoBehaviour {
         }
     }
 
+    // Applies gravity to the player
     public void Gravity() {
         velocity.y += player.Gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
+    // Handles player movements on X and Z axis
     public void MovementHandler() {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
@@ -53,15 +58,14 @@ public class Movement : MonoBehaviour {
         controller.Move(player.Speed * Time.deltaTime * move);
     }
 
+    // Applies upforce to the player
     public void JumpHandler() {
         if (Input.GetKeyDown(ctrl.Key_jump) && isGrounded) {
             velocity.y = Mathf.Sqrt(player.JumpHeight * -2f * player.Gravity);
-            if (player.movingState == Player.MovingState.walking)
-            {
+            if (player.movingState == Player.MovingState.walking) {
                 player.airSpeed = player.walkSpeed;
             }
-            else if (player.movingState == Player.MovingState.sprinting)
-            {
+            else if (player.movingState == Player.MovingState.sprinting) {
                 player.airSpeed = player.sprintSpeed;
             }
         }
@@ -74,6 +78,7 @@ public class Movement : MonoBehaviour {
         }
     }
 
+    // Checks the player's state
     public void PlayerState() {
         // Is sprinting
         if (isGrounded && Input.GetKey(ctrl.Key_sprint)) {

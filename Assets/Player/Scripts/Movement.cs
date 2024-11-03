@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
@@ -15,28 +13,36 @@ public class Movement : MonoBehaviour {
 
     [SerializeField] bool isGrounded;
 
+    private Player player;
+    private Controls ctrl;
+
+    void Start () {
+        player = Game.player;
+        ctrl = Game.ctrl;
+    }
+
     void Update() {
 
+        PlayerState();
         GroundDetector();
 
         MovementHandler();
         JumpHandler();
         SneakHandler();
 
-        PlayerState();
-
-        if (velocity.x != 0f || velocity.z != 0f) {
-            Game.player.IsStatic = false;
-        }
-        else Game.player.IsStatic = true;
+        Gravity();
     }
 
     public void GroundDetector() {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        if (isGrounded && velocity.y < 0)
-        {
+        if (isGrounded && velocity.y < 0) {
             velocity.y = -2f;
         }
+    }
+
+    public void Gravity() {
+        velocity.y += player.Gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 
     public void MovementHandler() {
@@ -44,55 +50,56 @@ public class Movement : MonoBehaviour {
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
-
-        Game.player.WeightMinus = Game.player.Weight / Game.player.MaxWeight;
-        controller.Move(move * (Game.player.Speed * ((3 / 2) - Game.player.WeightMinus)) * Time.deltaTime);
-
-        velocity.y += Game.player.Gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime); }
+        controller.Move(player.Speed * Time.deltaTime * move);
+    }
 
     public void JumpHandler() {
-        if (Input.GetKeyDown(Game.ctrl.Key_jump) && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(Game.player.JumpHeight * -2f * Game.player.Gravity);
-            if (Game.player.movingState == Player.MovingState.walking)
+        if (Input.GetKeyDown(ctrl.Key_jump) && isGrounded) {
+            velocity.y = Mathf.Sqrt(player.JumpHeight * -2f * player.Gravity);
+            if (player.movingState == Player.MovingState.walking)
             {
-                Game.player.airSpeed = Game.player.walkSpeed;
+                player.airSpeed = player.walkSpeed;
             }
-            else if (Game.player.movingState == Player.MovingState.sprinting)
+            else if (player.movingState == Player.MovingState.sprinting)
             {
-                Game.player.airSpeed = Game.player.sprintSpeed;
+                player.airSpeed = player.sprintSpeed;
             }
         }
     }
 
+    // Called when MovingState = sneaking
     public void SneakHandler() {
-        if (Game.player.movingState == Player.MovingState.sneaking)
-        {
-            Game.player.airSpeed = Game.player.sneakSpeed;
+        if (player.movingState == Player.MovingState.sneaking) {
+            player.airSpeed = player.sneakSpeed;
         }
     }
 
     public void PlayerState() {
-        if (isGrounded && Input.GetKey(Game.ctrl.Key_sprint))
-        {
-            Game.player.movingState = Player.MovingState.sprinting;
-            Game.player.Speed = Game.player.sprintSpeed;
+        // Is sprinting
+        if (isGrounded && Input.GetKey(ctrl.Key_sprint)) {
+            player.movingState = Player.MovingState.sprinting;
+            player.Speed = player.sprintSpeed;
         }
-        else if (isGrounded && Input.GetKey(Game.ctrl.Key_sneak))
-        {
-            Game.player.movingState = Player.MovingState.sneaking;
-            Game.player.Speed = Game.player.sneakSpeed;
+        // Is sneaking
+        else if (isGrounded && Input.GetKey(ctrl.Key_sneak)) {
+            player.movingState = Player.MovingState.sneaking;
+            player.Speed = player.sneakSpeed;
         }
-        else if (isGrounded)
-        {
-            Game.player.movingState = Player.MovingState.walking;
-            Game.player.Speed = Game.player.walkSpeed;
+        // Is walking
+        else if (isGrounded) {
+            player.movingState = Player.MovingState.walking;
+            player.Speed = player.walkSpeed;
         }
-        else
-        {
-            Game.player.movingState = Player.MovingState.air;
-            Game.player.Speed = Game.player.airSpeed + Mathf.Round(Mathf.Sqrt(Game.player.Gravity * -1));
+        // Is in air
+        else {
+            player.movingState = Player.MovingState.air;
+            player.Speed = player.airSpeed + Mathf.Round(Mathf.Sqrt(player.Gravity * -1));
         }
+        
+        // Is static
+        if (velocity.x != 0f || velocity.z != 0f) {
+            player.IsStatic = false;
+        }
+            else player.IsStatic = true;
     }
 }

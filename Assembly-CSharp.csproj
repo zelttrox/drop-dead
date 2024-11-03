@@ -65,7 +65,14 @@
     <Analyzer Include="D:\Unity\Unity Editor\6000.0.23f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Player\Scripts\MouseControl.cs" />
+    <Compile Include="Assets\Player\Scripts\Interactor.cs" />
+    <Compile Include="Assets\Scripts\Init.cs" />
+    <Compile Include="Assets\Player\Scripts\ActionHandler.cs" />
+    <Compile Include="Assets\Scripts\Display.cs" />
+    <Compile Include="Assets\Player\Scripts\Pickup.cs" />
+    <Compile Include="Assets\Player\Scripts\Movement.cs" />
+    <Compile Include="Assets\Scripts\Struct.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

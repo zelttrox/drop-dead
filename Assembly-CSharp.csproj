@@ -67,11 +67,13 @@
   <ItemGroup>
     <Compile Include="Assets\Player\Scripts\MouseControl.cs" />
     <Compile Include="Assets\Player\Scripts\Interactor.cs" />
+    <Compile Include="Assets\Player\Firearms\Scripts\Weapon.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
     <Compile Include="Assets\Player\Scripts\ActionHandler.cs" />
     <Compile Include="Assets\Scripts\Display.cs" />
     <Compile Include="Assets\Player\Scripts\Pickup.cs" />
     <Compile Include="Assets\Player\Scripts\Movement.cs" />
+    <Compile Include="Assets\Player\Firearms\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Struct.cs" />
   </ItemGroup>
   <ItemGroup>

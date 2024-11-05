@@ -9,8 +9,6 @@ public class MouseControl : MonoBehaviour {
 
     void Start() {
 
-        Game.ctrl.Mse_Sensitivity = 100f;
-
         Cursor.lockState = CursorLockMode.Locked ;
     }
 

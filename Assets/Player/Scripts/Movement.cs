@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
 
-    // Controller
-    public CharacterController controller;
+    // References
+    public References obj;
 
     // Ground detection
+    public LayerMask groundMask;
     private float groundDistance = 0.4f;
     private bool isGrounded;
-    public Transform groundCheck;
-    public LayerMask groundMask;
 
     // Velocity
     Vector3 velocity;
@@ -37,7 +36,7 @@ public class Movement : MonoBehaviour {
 
     // Checks if the player is grounded
     public void GroundDetector() {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(obj.groundCheck.position, groundDistance, groundMask);
         if (isGrounded && velocity.y < 0) {
             velocity.y = -2f;
         }
@@ -46,7 +45,7 @@ public class Movement : MonoBehaviour {
     // Applies gravity to the player
     public void Gravity() {
         velocity.y += player.Gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        obj.controller.Move(velocity * Time.deltaTime);
     }
 
     // Handles player movements on X and Z axis
@@ -55,7 +54,7 @@ public class Movement : MonoBehaviour {
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(player.Speed * Time.deltaTime * move);
+        obj.controller.Move(player.Speed * Time.deltaTime * move);
     }
 
     // Applies upforce to the player
@@ -103,8 +102,8 @@ public class Movement : MonoBehaviour {
         
         // Is static
         if (velocity.x != 0f || velocity.z != 0f) {
-            player.IsStatic = false;
+            player.isStatic = false;
         }
-            else player.IsStatic = true;
+            else player.isStatic = true;
     }
 }

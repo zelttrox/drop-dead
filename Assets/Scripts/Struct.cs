@@ -10,7 +10,7 @@ public struct Player {
     // Abilities
     public int Reach;
 
-    // Speed
+    // Speed & velocity
     public float sprintSpeed;
     public float walkSpeed;
     public float sneakSpeed;
@@ -18,7 +18,7 @@ public struct Player {
     public float Speed;
     public MovingState movingState;
     public enum MovingState { walking, sprinting, sneaking, air, swiming }
-    public bool IsStatic;
+    public bool isStatic;
 
     // Gravity
     public float Gravity;
@@ -56,10 +56,17 @@ public struct Entities {
 
     // Ennemy type
     public Type type;
-    public enum Type { Sentinel, Fetcher }
+    public enum Type { Sentinel, Fetcher, Juggernaut }
 
-    // Movements
-    public float speed;
+    // Stats
+    public float Speed;
+    public float AttackSpeed;
+
+    // Pathing
+    public float targetUpdateDelay;
+
+    // Shooting
+    public float shootingRange;
 }
 
 public class Game : MonoBehaviour {
@@ -95,22 +102,28 @@ public class Game : MonoBehaviour {
         ctrl.Key_goBackward = KeyCode.K;
         ctrl.Key_goRight = KeyCode.L;
         ctrl.Key_goLeft = KeyCode.T;
+
         ctrl.Key_sprint = KeyCode.P;
         ctrl.Key_jump = KeyCode.Space;
         ctrl.Key_sneak = KeyCode.O;
         ctrl.Key_inventory = KeyCode.M;
         ctrl.Key_interact = KeyCode.U;
+
         ctrl.Mse_Primary = KeyCode.Mouse0;
         ctrl.Mse_Secondary = KeyCode.Mouse1;
+        ctrl.Mse_Sensitivity = 100f;
     }
 
     // Initialize controls 
     public static void InitEntities() {
 
-        // Initialize player structure
-        Debug.Log("<color=cyan>~ Instancing Controls</color>");
+        // Initialize entities structure
+        Debug.Log("<color=cyan>~ Instancing Entity </color>");
 
-        entity.speed = 10f;
+        entity.Speed = 10f;
+        entity.AttackSpeed = 1f;
+        entity.shootingRange = 2f;
+        entity.targetUpdateDelay = 0.2f;
 
     }
 }

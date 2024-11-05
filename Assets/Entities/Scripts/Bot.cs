@@ -7,6 +7,7 @@ public class Bot : MonoBehaviour {
     public Entities entity;
 
     [SerializeField] Entities.Type type;
+    [SerializeField] Transform target;
 
     private bool isAlive = true;
     private bool inRange;
@@ -29,7 +30,7 @@ public class Bot : MonoBehaviour {
             // if player out of shooting range
             else {
                 if (type == Entities.Type.Fetcher) {
-                    MoveTo(obj.target);
+                    MoveTo(target);
                 }
                 else if (type == Entities.Type.Sentinel) {
                     //
@@ -42,11 +43,10 @@ public class Bot : MonoBehaviour {
     }
 
     private void CheckRange() {
-            inRange = Vector3.Distance(obj.target.position, obj.agent.transform.position) <= Game.entity.shootingRange;
+        inRange = Vector3.Distance(obj.target.position, obj.agent.transform.position) <= Game.entity.shootingRange;
     }
 
     private void AimTarget() {
-        // Code to aim at target
         // Vector3 viewPos = obj.target.position - transform.position;
         // viewPos.y = 0;
         // Quaternion sight = Quaternion.LookRotation(viewPos);

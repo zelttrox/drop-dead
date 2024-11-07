@@ -8,56 +8,77 @@ public class Bot : MonoBehaviour {
 
     [SerializeField] Entities.Type type;
     [SerializeField] Transform target;
+    [SerializeField] Transform spawn;
 
-    private bool isAlive = true;
+    private bool isAlive;
     private bool inRange;
+    private bool inSoundRange;
+
     private float targetUpdateDeadline;
 
+    void Start() {
+        isAlive = true;
+    }
+
     void Update() {
-        BrainAI();
+        if (obj.target != null && isAlive) {
+            BrainAI();
+            }
     }
 
     private void BrainAI() {
 
-        if (obj.target != null && isAlive) {
             // Loop
-            CheckRange();
+            CheckRanges();
 
-            // if player in shooting range
+            // Player in sound range
+            if (inSoundRange) {
+                ListenTo(obj.audioListener);
+                }
+
+            // Player in shooting range
             if (inRange) {
                 AimTarget();
-            }
-            // if player out of shooting range
+                }
+
+            // Player out of shooting range
             else {
-                if (type == Entities.Type.Fetcher) {
-                    MoveTo(target);
+
+                switch (type) {
+
+                case Entities.Type.Fetcher :
+                MoveTo(target);
+                break;
+
+                case Entities.Type.Sentinel :
+                MoveTo(spawn);
+                break;
+
+                case Entities.Type.Juggernaut :
+                break;
                 }
-                else if (type == Entities.Type.Sentinel) {
-                    //
-                }
-                else if (type == Entities.Type.Juggernaut) {
-                    //
-                }
-            }
+            } 
         }
+
+    private void CheckRanges() {
+        inRange = Vector3.Distance(obj.target.position, obj.agent.transform.position) <= Game.entity.shootingRange;
+        inSoundRange = Vector3.Distance(obj.target.position, obj.agent.transform.position) <= Game.entity.hearDistance;
     }
 
-    private void CheckRange() {
-        inRange = Vector3.Distance(obj.target.position, obj.agent.transform.position) <= Game.entity.shootingRange;
+    private void ListenTo(AudioListener audio) {
+        // if a sound is heard
+        // Game.player.isSpoted = true
     }
 
     private void AimTarget() {
-        Debug.Log("Should be looking at player");
-        Vector3 viewPos = obj.target.position - transform.position;
-        viewPos.y = 0;
+        Vector3 viewPos = obj.target.position - transform.position; viewPos.y = 0;
         Quaternion sight = Quaternion.LookRotation(viewPos);
         transform.rotation = Quaternion.Slerp(transform.rotation, sight, 0.2f);
     }
 
     private void MoveTo(Transform interestPoint) {
-        Debug.Log("Should be moving towards player");
         if (Time.time >= targetUpdateDeadline) {
-            targetUpdateDeadline = Time.time + entity.targetUpdateDelay;
+            targetUpdateDeadline = Time.time + Game.entity.targetUpdateDelay;
             obj.agent.SetDestination(interestPoint.position);
         }
     }

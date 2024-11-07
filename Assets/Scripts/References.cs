@@ -8,6 +8,7 @@ public class References : MonoBehaviour {
     public CharacterController controller;
     public Transform groundCheck;
     public Transform cam;
+    public AudioListener audioListener;
 
     [Header("Entities")]
     public NavMeshAgent agent;

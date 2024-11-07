@@ -25,6 +25,7 @@ public struct Player {
     public float JumpHeight;
 
     // Logic
+    public bool isSpoted;
     public bool isInsideMenu;
     public bool objectInReach; // Unassigned
 }
@@ -59,8 +60,9 @@ public struct Entities {
     public enum Type { Sentinel, Fetcher, Juggernaut }
 
     // Stats
-    public float Speed;
-    public float AttackSpeed;
+    public float speed;
+    public float attackSpeed;
+    public float hearDistance;
 
     // Pathing
     public float targetUpdateDelay;
@@ -120,10 +122,11 @@ public class Game : MonoBehaviour {
         // Initialize entities structure
         Debug.Log("<color=cyan>~ Instancing Entity </color>");
 
-        entity.Speed = 10f;
-        entity.AttackSpeed = 1f;
-        entity.shootingRange = 20f;
+        entity.speed = 10;
+        entity.attackSpeed = 1;
+        entity.shootingRange = 20;
         entity.targetUpdateDelay = 0.2f;
+        entity.hearDistance = 30;
 
     }
 }

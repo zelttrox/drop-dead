@@ -47,10 +47,10 @@ public class Bot : MonoBehaviour {
     }
 
     private void AimTarget() {
-        // Vector3 viewPos = obj.target.position - transform.position;
-        // viewPos.y = 0;
-        // Quaternion sight = Quaternion.LookRotation(viewPos);
-        // transform.rotation = Quaternion.Slerp(transform.rotation, sight, 0.2f);
+        Vector3 viewPos = obj.target.position - transform.position;
+        viewPos.y = 0;
+        Quaternion sight = Quaternion.LookRotation(viewPos);
+        transform.rotation = Quaternion.Slerp(transform.rotation, sight, 0.2f);
     }
 
     private void MoveTo(Transform interestPoint) {

@@ -122,7 +122,7 @@ public class Game : MonoBehaviour {
 
         entity.Speed = 10f;
         entity.AttackSpeed = 1f;
-        entity.shootingRange = 2f;
+        entity.shootingRange = 20f;
         entity.targetUpdateDelay = 0.2f;
 
     }

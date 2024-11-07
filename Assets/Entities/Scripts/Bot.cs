@@ -47,6 +47,7 @@ public class Bot : MonoBehaviour {
     }
 
     private void AimTarget() {
+        Debug.Log("Should be looking at player");
         Vector3 viewPos = obj.target.position - transform.position;
         viewPos.y = 0;
         Quaternion sight = Quaternion.LookRotation(viewPos);
@@ -54,6 +55,7 @@ public class Bot : MonoBehaviour {
     }
 
     private void MoveTo(Transform interestPoint) {
+        Debug.Log("Should be moving towards player");
         if (Time.time >= targetUpdateDeadline) {
             targetUpdateDeadline = Time.time + entity.targetUpdateDelay;
             obj.agent.SetDestination(interestPoint.position);

@@ -22,43 +22,43 @@ public class Bot : MonoBehaviour {
 
     void Update() {
         if (obj.target != null && isAlive) {
-            BrainAI();
-            }
+            UpdateAI(); }
     }
 
-    private void BrainAI() {
+    private void UpdateAI() {
 
             // Loop
             CheckRanges();
 
             // Player in sound range
             if (inSoundRange) {
-                ListenTo(obj.audioListener);
-                }
+                ListenTo(obj.audioListener); }
 
-            // Player in shooting range
-            if (inRange) {
-                AimTarget();
-                }
-
-            // Player out of shooting range
-            else {
-
-                switch (type) {
+            // Specific type functions
+            switch (type) {
 
                 case Entities.Type.Fetcher :
-                MoveTo(target);
+                Fetcher();
                 break;
 
                 case Entities.Type.Sentinel :
-                MoveTo(spawn);
                 break;
 
                 case Entities.Type.Juggernaut :
-                break;
-                }
-            } 
-        }
+                break; 
+                
+                } 
+    }
+
+    private void Fetcher() {
+
+            // Shooting range logic
+            if (inRange) { 
+                AimTarget(); }
+            else { 
+                MoveTo(target); } 
+
+    }
 
     private void CheckRanges() {
         inRange = Vector3.Distance(obj.target.position, obj.agent.transform.position) <= Game.entity.shootingRange;
